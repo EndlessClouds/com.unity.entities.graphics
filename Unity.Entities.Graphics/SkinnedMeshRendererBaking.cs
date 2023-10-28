@@ -24,6 +24,7 @@ namespace Unity.Rendering
 
         public override void Bake(SkinnedMeshRenderer authoring)
         {
+            return;
             var materials = new List<Material>();
             authoring.GetSharedMaterials(materials);
 

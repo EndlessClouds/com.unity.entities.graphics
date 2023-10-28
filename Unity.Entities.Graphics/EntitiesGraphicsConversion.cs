@@ -58,6 +58,7 @@ namespace Unity.Rendering
     {
         public override void Bake(TextMesh authoring)
         {
+            return;
             // Setting companions to Dynamic
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             var meshRenderer = GetComponent<MeshRenderer>();
@@ -70,6 +71,7 @@ namespace Unity.Rendering
     {
         public override void Bake(SpriteRenderer authoring)
         {
+            return;
             // Setting companions to Dynamic
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponentObject(entity, authoring);
@@ -80,6 +82,7 @@ namespace Unity.Rendering
     {
         public override void Bake(VisualEffect authoring)
         {
+            return;
             // Setting companions to Dynamic
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponentObject(entity, authoring);
@@ -90,6 +93,7 @@ namespace Unity.Rendering
     {
         public override void Bake(ParticleSystem authoring)
         {
+            return;
             var particleSystemRenderer = GetComponent<ParticleSystemRenderer>();
             // Setting companions to Dynamic
             var entity = GetEntity(TransformUsageFlags.Dynamic);
@@ -102,6 +106,7 @@ namespace Unity.Rendering
     {
         public override void Bake(AudioSource authoring)
         {
+            return;
             // Setting companions to Dynamic
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponentObject(entity, authoring);
