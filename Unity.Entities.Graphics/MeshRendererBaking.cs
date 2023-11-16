@@ -1,4 +1,3 @@
-
 //#define ENABLE_MESH_RENDERER_SUBMESH_DATA_SHARING
 
 using System.Collections.Generic;
@@ -30,6 +29,11 @@ namespace Unity.Rendering
             if (textMesh != null)
                 return;
 
+            if (authoring.CompareTag("DisableMeshRendererBaking"))
+            {
+                return;
+            }
+
             // Takes a dependency on the mesh
             var meshFilter = GetComponent<MeshFilter>();
             var mesh = (meshFilter != null) ? GetComponent<MeshFilter>().sharedMesh : null;
@@ -39,11 +43,12 @@ namespace Unity.Rendering
 
             List<Entity> additionalEntities = null;
 
-#if ENABLE_MESH_RENDERER_SUBMESH_DATA_SHARING
+            #if ENABLE_MESH_RENDERER_SUBMESH_DATA_SHARING
             MeshRendererBakingUtility.ConvertOnPrimaryEntity(this, authoring, mesh, sharedMaterials);
-#else
-            MeshRendererBakingUtility.ConvertOnPrimaryEntityForSingleMaterial(this, authoring, mesh, sharedMaterials, null, out additionalEntities);
-#endif
+            #else
+            MeshRendererBakingUtility.ConvertOnPrimaryEntityForSingleMaterial(this, authoring, mesh, sharedMaterials,
+                null, out additionalEntities);
+            #endif
 
             DependsOnLightBaking();
 
@@ -80,7 +85,7 @@ namespace Unity.Rendering
 
             m_AdditionalEntities = GetEntityQuery(new EntityQueryDesc
             {
-                All = new []
+                All = new[]
                 {
                     ComponentType.ReadOnly<AdditionalMeshRendererEntity>()
                 },
@@ -119,7 +124,8 @@ namespace Unity.Rendering
             if (m_LightMapBakingContext != null)
             {
                 foreach (var authoring in SystemAPI.Query<RefRO<MeshRendererBakingData>>()
-                             .WithOptions(EntityQueryOptions.IncludePrefab | EntityQueryOptions.IncludeDisabledEntities))
+                             .WithOptions(EntityQueryOptions.IncludePrefab |
+                                          EntityQueryOptions.IncludeDisabledEntities))
                 {
                     context.CollectLightMapUsage(authoring.ValueRO.MeshRenderer);
                 }
@@ -174,12 +180,11 @@ namespace Unity.Rendering
     [UpdateAfter(typeof(MeshRendererBaking))]
     partial class RenderMeshPostProcessSystem : SystemBase
     {
-
-#if ENABLE_MESH_RENDERER_SUBMESH_DATA_SHARING
+        #if ENABLE_MESH_RENDERER_SUBMESH_DATA_SHARING
         const bool EnableSubMeshDataSharing = true;
-#else
+        #else
         const bool EnableSubMeshDataSharing = false;
-#endif
+        #endif
 
         struct RenderMeshConversionInfo
         {
@@ -208,7 +213,8 @@ namespace Unity.Rendering
                 .Build(this);
             m_RenderMeshEntities = new EntityQueryBuilder(Allocator.Temp)
                 .WithAll<RenderMesh, MaterialMeshInfo>()
-                .WithOptions(EntityQueryOptions.IncludePrefab | EntityQueryOptions.IncludeDisabledEntities | EntityQueryOptions.IgnoreComponentEnabledState)
+                .WithOptions(EntityQueryOptions.IncludePrefab | EntityQueryOptions.IncludeDisabledEntities |
+                             EntityQueryOptions.IgnoreComponentEnabledState)
                 .Build(this);
 
             RequireForUpdate(m_BakedEntities);
@@ -276,7 +282,8 @@ namespace Unity.Rendering
                         UseIndexRange = true,
                         MaterialMeshIndexRangeStart = matMeshIndexRangeStart,
                         MaterialMeshIndexRangeLength = submeshCount,
-                        RenderMeshSubMeshIndex = renderMesh.subMesh, // Used for skinning even when using a MaterialMeshIndex range
+                        RenderMeshSubMeshIndex =
+                            renderMesh.subMesh, // Used for skinning even when using a MaterialMeshIndex range
                         ErrorMessage = errorMessage,
                     });
                 }
@@ -327,8 +334,11 @@ namespace Unity.Rendering
 
                     if (conversionInfo.UseIndexRange)
                     {
-                        Assert.IsTrue(conversionInfo.RenderMeshSubMeshIndex < conversionInfo.MaterialMeshIndexRangeLength);
-                        matMeshIndex = matMeshIndices[conversionInfo.MaterialMeshIndexRangeStart + conversionInfo.RenderMeshSubMeshIndex];
+                        Assert.IsTrue(conversionInfo.RenderMeshSubMeshIndex <
+                                      conversionInfo.MaterialMeshIndexRangeLength);
+                        matMeshIndex =
+                            matMeshIndices[
+                                conversionInfo.MaterialMeshIndexRangeStart + conversionInfo.RenderMeshSubMeshIndex];
                     }
                     else
                     {
@@ -356,7 +366,8 @@ namespace Unity.Rendering
             }
         }
 
-        static void GetAllRenderMeshes(EntityManager entityManager, out RenderMesh[] renderMeshes, out int[] renderMeshIndices)
+        static void GetAllRenderMeshes(EntityManager entityManager, out RenderMesh[] renderMeshes,
+            out int[] renderMeshIndices)
         {
             int countUpperBound = entityManager.GetSharedComponentCount();
 
@@ -372,7 +383,8 @@ namespace Unity.Rendering
             renderMeshIndices = renderMeshIndicesList.ToArray();
         }
 
-        static void ExtractUniqueMaterialAndMeshes(RenderMesh[] renderMeshes, out Material[] uniqueMaterials, out Mesh[] uniqueMeshes)
+        static void ExtractUniqueMaterialAndMeshes(RenderMesh[] renderMeshes, out Material[] uniqueMaterials,
+            out Mesh[] uniqueMeshes)
         {
             var meshes = new Dictionary<Mesh, bool>(renderMeshes.Length);
             var materials = new Dictionary<Material, bool>(renderMeshes.Length);
@@ -433,13 +445,15 @@ namespace Unity.Rendering
             return remapTable;
         }
 
-        static void LogRenderMeshConversionWarningOnEntity(EntityManager entityManager, Entity entity, string errorMessage)
+        static void LogRenderMeshConversionWarningOnEntity(EntityManager entityManager, Entity entity,
+            string errorMessage)
         {
             Renderer authoring = null;
             if (entityManager.HasComponent<MeshRendererBakingData>(entity))
                 authoring = entityManager.GetComponentData<MeshRendererBakingData>(entity).MeshRenderer.Value;
             else if (entityManager.HasComponent<SkinnedMeshRendererBakingData>(entity))
-                authoring = entityManager.GetComponentData<SkinnedMeshRendererBakingData>(entity).SkinnedMeshRenderer.Value;
+                authoring = entityManager.GetComponentData<SkinnedMeshRendererBakingData>(entity).SkinnedMeshRenderer
+                    .Value;
 
             string entityDebugString = authoring is null
                 ? entity.ToString()
