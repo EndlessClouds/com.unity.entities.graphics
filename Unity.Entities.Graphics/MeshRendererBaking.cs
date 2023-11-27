@@ -31,6 +31,11 @@ namespace Unity.Rendering
             if (textMesh != null)
                 return;
 
+            if (authoring.CompareTag("DisableMeshRendererBaking"))
+            {
+                return;
+            }
+
             // Takes a dependency on the mesh
             var meshFilter = GetComponent<MeshFilter>();
             var mesh = (meshFilter != null) ? GetComponent<MeshFilter>().sharedMesh : null;
