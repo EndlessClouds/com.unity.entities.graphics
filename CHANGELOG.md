@@ -1,4 +1,23 @@
+---
+uid: changelog
+---
+
 # Changelog
+
+## [1.2.0-exp.3] - 2023-11-09
+
+### Changed
+
+* Update instances of deprecated `MeshWriteData.uvRegion` for `2023.2` or higher
+* obsolete `FindObjectsOfType<T>()` changed for `FindObjectsByType<T>()` in `2023.2` or higher.
+* The minimum supported editor version is now 2022.3.11f1
+
+
+## [1.1.0-pre.3] - 2023-10-17
+
+### Changed
+* Updated version for release preparation
+
 
 ## [1.1.0-exp.1] - 2023-09-18
 
@@ -41,8 +60,6 @@
 
 * Updated com.unity.entities dependency to 1.0.14
 
-
-### Security
 
 ## [1.0.11] - 2023-06-19
 
