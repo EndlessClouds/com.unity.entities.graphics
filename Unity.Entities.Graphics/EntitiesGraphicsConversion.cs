@@ -54,60 +54,6 @@ namespace Unity.Rendering
         }
     }
 
-    class TextMeshCompanionBaker : Baker<TextMesh>
-    {
-        public override void Bake(TextMesh authoring)
-        {
-            // Setting companions to Dynamic
-            var entity = GetEntity(TransformUsageFlags.Dynamic);
-            var meshRenderer = GetComponent<MeshRenderer>();
-            AddComponentObject(entity, authoring);
-            AddComponentObject(entity, meshRenderer);
-        }
-    }
-
-    class SpriteRendererCompanionBaker : Baker<SpriteRenderer>
-    {
-        public override void Bake(SpriteRenderer authoring)
-        {
-            // Setting companions to Dynamic
-            var entity = GetEntity(TransformUsageFlags.Dynamic);
-            AddComponentObject(entity, authoring);
-        }
-    }
-
-    class VisualEffectCompanionBaker : Baker<VisualEffect>
-    {
-        public override void Bake(VisualEffect authoring)
-        {
-            // Setting companions to Dynamic
-            var entity = GetEntity(TransformUsageFlags.Dynamic);
-            AddComponentObject(entity, authoring);
-        }
-    }
-
-    class ParticleSystemCompanionBaker : Baker<ParticleSystem>
-    {
-        public override void Bake(ParticleSystem authoring)
-        {
-            var particleSystemRenderer = GetComponent<ParticleSystemRenderer>();
-            // Setting companions to Dynamic
-            var entity = GetEntity(TransformUsageFlags.Dynamic);
-            AddComponentObject(entity, authoring);
-            AddComponentObject(entity, particleSystemRenderer);
-        }
-    }
-
-    class AudioSourceCompanionBaker : Baker<AudioSource>
-    {
-        public override void Bake(AudioSource authoring)
-        {
-            // Setting companions to Dynamic
-            var entity = GetEntity(TransformUsageFlags.Dynamic);
-            AddComponentObject(entity, authoring);
-        }
-    }
-
 #if SRP_10_0_0_OR_NEWER
     class VolumeCompanionBaker : Baker<Volume>
     {
