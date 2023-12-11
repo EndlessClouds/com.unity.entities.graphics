@@ -58,7 +58,6 @@ namespace Unity.Rendering
     {
         public override void Bake(TextMesh authoring)
         {
-            return;
             // Setting companions to Dynamic
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             var meshRenderer = GetComponent<MeshRenderer>();
@@ -71,7 +70,6 @@ namespace Unity.Rendering
     {
         public override void Bake(SpriteRenderer authoring)
         {
-            return;
             // Setting companions to Dynamic
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponentObject(entity, authoring);
@@ -82,7 +80,6 @@ namespace Unity.Rendering
     {
         public override void Bake(VisualEffect authoring)
         {
-            return;
             // Setting companions to Dynamic
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponentObject(entity, authoring);
@@ -93,7 +90,6 @@ namespace Unity.Rendering
     {
         public override void Bake(ParticleSystem authoring)
         {
-            return;
             var particleSystemRenderer = GetComponent<ParticleSystemRenderer>();
             // Setting companions to Dynamic
             var entity = GetEntity(TransformUsageFlags.Dynamic);
@@ -106,7 +102,6 @@ namespace Unity.Rendering
     {
         public override void Bake(AudioSource authoring)
         {
-            return;
             // Setting companions to Dynamic
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponentObject(entity, authoring);
@@ -140,6 +135,7 @@ namespace Unity.Rendering
                 AddComponentObject(entity, meshCollider);
         }
     }
+
 #endif
 
 #if HDRP_10_0_0_OR_NEWER
@@ -168,16 +164,6 @@ namespace Unity.Rendering
     class HDAdditionalReflectionDataCompanionBaker : Baker<HDAdditionalReflectionData>
     {
         public override void Bake(HDAdditionalReflectionData authoring)
-        {
-            // Setting companions to Dynamic
-            var entity = GetEntity(TransformUsageFlags.Dynamic);
-            AddComponentObject(entity, authoring);
-        }
-    }
-
-    class DecalProjectorCompanionBaker : Baker<DecalProjector>
-    {
-        public override void Bake(DecalProjector authoring)
         {
             // Setting companions to Dynamic
             var entity = GetEntity(TransformUsageFlags.Dynamic);
@@ -242,6 +228,18 @@ namespace Unity.Rendering
     }
 #endif
 
+#if HDRP_10_0_0_OR_NEWER || URP_10_0_0_OR_NEWER
+    class DecalProjectorCompanionBaker : Baker<DecalProjector>
+    {
+        public override void Bake(DecalProjector authoring)
+        {
+            // Setting companions to Dynamic
+            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            AddComponentObject(entity, authoring);
+        }
+    }
+#endif
+
 #if HYBRID_ENTITIES_CAMERA_CONVERSION
     class CameraCompanionBaker : Baker<Camera>
     {
@@ -276,6 +274,7 @@ namespace Unity.Rendering
         }
     }
 #endif
+
 #endif
 #endif
 
