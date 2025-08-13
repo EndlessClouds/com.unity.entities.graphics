@@ -61,9 +61,10 @@ namespace Unity.Rendering
 
         internal static bool IsValidLightProbeGrid()
         {
-            var probes = LightmapSettings.lightProbes;
-            bool validGrid = probes != null && probes.count > 0;
-            return validGrid;
+            return true;
+            // var probes = LightmapSettings.lightProbes;
+            // bool validGrid = probes != null && probes.count > 0;
+            // return validGrid;
         }
 
         /// <inheritdoc/>
