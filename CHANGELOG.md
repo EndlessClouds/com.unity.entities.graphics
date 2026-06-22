@@ -4,6 +4,40 @@ uid: changelog
 
 # Changelog
 
+## [1.4.20] - 2026-05-20
+
+
+### Fixed
+
+* Fixed an issue where materials and/or meshes would be assigned to the wrong object during live baking.
+* Fixed an issue where changing render mesh properties during incremental baking would cause incorrect mesh/material assignment.
+* Fixed an issue where baking lightmap-affected renderers would cause the baked artefact hash to be different between editor sessions.
+* Materials and Meshes are now sorted by their GUIDs instead of EntityId, making their position in the RenderMeshArray stable across editor loads.
+
+
+## [1.4.19] - 2026-04-13
+
+### Changed
+* Updated the com.unity.entities dependency to version 1.4.6
+
+## [1.4.18] - 2026-02-16
+
+### Changed
+
+* Updated the `com.unity.entities` dependency to version `1.4.5`
+
+
+## [1.4.17] - 2025-12-16
+
+### Changed
+
+* Updated the `com.unity.entities` dependency to version `1.4.4`
+
+### Fixed
+
+* EntitiesGraphicsSystem holds references to Materials and Meshes so they do not get destroyed, if not unregistered, when Resources.UnloadUnusedAssets is called and they are no more referenced outside of EntitiesGraphicsSystem.
+
+
 ## [1.4.16] - 2025-10-17
 
 ### Changed
@@ -13,7 +47,6 @@ uid: changelog
 ### Fixed
 
 * Added proper handling for disabling the PresentationSystemGroup
-
 
 
 ## [1.4.15] - 2025-09-05
